@@ -1,4 +1,18 @@
 import socket
+import sys, getopt
+import argparse
+
+def PrintLogo():
+  print '      _                 _         _            '
+  print '     | |               | |       | |           '
+  print '   __| |_   _ _ __ ___ | |__   __| |_ __  ___  '
+  print '  / _| | | | | |_ \ _ \| |_ \ / _| | |_ \/ __| '
+  print ' | (_| | |_| | | | | | | |_) | (_| | | | \__ \\'
+  print '  \__,_|\__,_|_| |_| |_|_.__/ \__,_|_| |_|___/ '
+  print
+  print
+
+
 
 class DNSQuery:
   def __init__(self, data):
@@ -16,12 +30,19 @@ class DNSQuery:
     return packet
 
 if __name__ == '__main__':
-  ip = '87.240.143.241'
-  print 'dumbdns'
+  PrintLogo()
+  
+  parser = argparse.ArgumentParser()
+  parser.add_argument("-a", "--addr", type=str, help="Selected IPv4 address")
+  args = parser.parse_args()
+
+  ip = args.addr
   print '[*] Starting nameserver'
+  print '[*] Destination ip is', ip
 
   sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
   sock.bind(('',53))
+  print '[*] Server is started'
 
   try:
     while 1:
@@ -32,4 +53,4 @@ if __name__ == '__main__':
 
   except KeyboardInterrupt:
     print '[*] Closing nameserver'
-    sock.close();
+    sock.close()
